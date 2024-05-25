@@ -47,16 +47,19 @@ bot.on(discord.Events.ClientReady, () => {
 
     let loaded_module_count = 0;
     let modules_path = path.join(__dirname, 'modules');
-    let module_files = fs.readdirSync(modules_path, {recursive: false}).filter (file => file.endsWith('.js'));
+    let module_files = fs.readdirSync(modules_path, {recursive: false})
+    .filter(file => file.endsWith('.js'))
+    .filter(file => file.startsWith('.'));
 
     log("Loading Modules...");
+    debug("Modules found: ", module_files)
 
     for (let filename of module_files) {
         
         let module_path = path.join(modules_path, filename);
         let module = require(module_path);
 
-        if (!module.length)
+        if (!Object.keys(module).length)
             continue;
 
         if (module.in_dev == arguments.dev) {
