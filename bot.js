@@ -6,10 +6,10 @@ const hide_bin = require('yargs/helpers').hideBin;
 const loggers = require('./handlers/logger');
 
 let log = (...data) => {loggers.log("Bot", data)}
-let debug = (...data) => {loggers.log("Bot", data)}
+let debug = (...data) => {loggers.debug("Bot", data)}
 
 let credentials = require('./config/credentials.json');
-let arguments = yargs(hide_bin(process.argv)).argv;
+let cli = yargs(hide_bin(process.argv)).argv;
 
 let bot = new discord.Client({
     intents: [
@@ -48,9 +48,7 @@ bot.on(discord.Events.ClientReady, () => {
     let loaded_module_count = 0;
     let modules_path = path.join(__dirname, 'modules');
     let module_files = fs.readdirSync(modules_path, {recursive: false})
-    .filter(file => file.endsWith('.js'))
-    .filter(file => file.startsWith('.'));
-
+    .filter(file => file.endsWith('.js'));
     log("Loading Modules...");
     debug("Modules found: ", module_files)
 
@@ -62,7 +60,7 @@ bot.on(discord.Events.ClientReady, () => {
         if (!Object.keys(module).length)
             continue;
 
-        if (module.in_dev == arguments.dev) {
+        if (module.in_dev == !!cli.dev) {
             module.start(bot);
             loaded_module_count++;
         }
