@@ -32,12 +32,13 @@ function start(bot) {
         if ('data' in command && 'execute' in command) {
             bot.commands.set(command.data.name, command);
             commands.push(command.data.toJSON());
+            debug("Registering command "+command.data.name);
         } else {
             log(`The command at ${command_path} is missing a required "data" or "execute" property.`);
         }
     }
 
-    const rest = new REST().setToken(token);
+    const rest = new REST().setToken(credentials.discord.token);
 
     (async () => {
         try {    
