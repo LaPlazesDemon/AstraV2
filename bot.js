@@ -9,7 +9,8 @@ let log = (...data) => {loggers.log("Bot", data)}
 let debug = (...data) => {loggers.log("Bot", data)}
 
 let credentials = require('./config/credentials.json');
-let arguments = yargs(yargs.hidebin(process.argv)).argv;
+let arguments = yargs(hide_bin(process.argv)).argv;
+
 let bot = new discord.Client({
     intents: [
         discord.GatewayIntentBits.Guilds,
